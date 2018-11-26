@@ -1,8 +1,9 @@
 name: BedwarsRelCloudNetAddon
 author: Fridious
 description: A simple CloudNetAddon to change the state of server to ingame, if the bedwars game starts
-version: 1.0
+version: ${project.version}
 main: de.fridious.bedwarsrel.cloudnet.addon.BedwarsRelCloudNetAddon
+prefix: BedwarsRelCloudNetAddon
 softdepend: [CloudNetAPI,BedwarsRel]
 commands:
   bedwarsrelcloudnetaddon:
