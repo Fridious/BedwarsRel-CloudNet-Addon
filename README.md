@@ -2,7 +2,10 @@
  
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/330bf38601a34c7dbd9d270a4da7da23)](https://www.codacy.com/app/Fridious/BedwarsRel-CloudNet-Addon?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Fridious/BedwarsRel-CloudNet-Addon&amp;utm_campaign=Badge_Grade) 
 [![DKPlugins Discord](https://discordapp.com/api/guilds/513441444959223809/embed.png)](https://discord.gg/PawBsVy)
- 
+
+## SpigotMc
+<https://www.spigotmc.org/resources/bedwarsrel-cloudnet-addon.62734/>
+
 ## Introduction
 This is a simple BedwarsRel addon for CloudNet.
 
