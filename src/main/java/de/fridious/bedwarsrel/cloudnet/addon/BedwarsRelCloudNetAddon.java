@@ -13,6 +13,9 @@ import io.github.bedwarsrel.BedwarsRel;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+import java.util.Properties;
+
 public class BedwarsRelCloudNetAddon extends JavaPlugin {
 
     /*
@@ -38,8 +41,18 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
         Set the prefixes
          */
         this.consolePrefix = "[BedwarsRelCloudNetAddon] ";
-        this.chatPrefix = "§8[§4BedwarsRelCloudNetAddonCommand§8] §7";
-        this.version = "1.0";
+        this.chatPrefix = "§8[§4BedwarsRelCloudNetAddon§8] §7";
+        /*
+        Load and set the project version from the project properties
+         */
+        final Properties properties = new Properties();
+        try {
+            properties.load(this.getClassLoader().getResourceAsStream("project.properties"));
+        } catch (IOException exception) {
+            System.out.println(this.consolePrefix + "Could't load version");
+            exception.printStackTrace();
+        }
+        this.version = properties.getProperty("version");
     }
 
     /*
@@ -87,23 +100,15 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
         System.out.println(getConsolePrefix() + "GitHub: https://github.com/fridious");
     }
 
-    /*
-    Get the console prefix
-     */
+
     public String getConsolePrefix() {
         return consolePrefix;
     }
 
-    /*
-    Get the chat prefix
-     */
     public String getChatPrefix() {
         return chatPrefix;
     }
 
-    /*
-    Get the instance of this class
-     */
     public static BedwarsRelCloudNetAddon getInstance() {
         return instance;
     }
