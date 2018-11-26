@@ -85,7 +85,7 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
              */
             CloudServer.getInstance().updateAsync();
         });
-        System.out.println(getConsolePrefix() + "BedwarsRelCloudNetAddon " + this.version + " starting...");
+        System.out.println(getConsolePrefix() + "BedwarsRelCloudNetAddon " + this.version + " is starting...");
         System.out.println(getConsolePrefix() + "Plugin is developed by Fridious");
         System.out.println(getConsolePrefix() + "GitHub: https://github.com/fridious");
     }
@@ -95,11 +95,10 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        System.out.println(getConsolePrefix() + "BedwarsRelCloudNetAddon v" + this.version + " stopping...");
+        System.out.println(getConsolePrefix() + "BedwarsRelCloudNetAddon v" + this.version + " is stopping...");
         System.out.println(getConsolePrefix() + "Plugin is developed by Fridious");
         System.out.println(getConsolePrefix() + "GitHub: https://github.com/fridious");
     }
-
 
     public String getConsolePrefix() {
         return consolePrefix;
