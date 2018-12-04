@@ -7,13 +7,14 @@
 <https://www.spigotmc.org/resources/bedwarsrel-cloudnet-addon.62734/>
 
 ## Introduction
-This is a simple BedwarsRel addon for CloudNet.
+This is a simple BedwarsRel addon for CloudNet. It only works on a single server, so the arena mode from BedwarsRel doesn't work.
 
 ## Functions
 On start of the plugin, the motd changed to the map name for displaying the map on the signs and the max players of the server changed to the max players of the bedwars game
 If the bedwars game starts, the game changed the state to ingame of cloudnet to start a new server automatically and hide the server in the lobbies on the signs.
 You can enable to get coins on kill, finalkill, win and target block destroy in the config.
 Also the slots changed to default 100, in order to join spectators. Also you can change the 100 spectator slots.
+It has a Stats command, which executed the intern bw stats command of BedwarsRel
 
 ## Dependencies
 -   CloudNet <https://www.spigotmc.org/resources/cloudnet-the-cloud-network-environment-technology.42059/>
