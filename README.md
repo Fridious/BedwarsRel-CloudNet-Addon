@@ -12,12 +12,14 @@ This is a simple BedwarsRel addon for CloudNet.
 ## Functions
 On start of the plugin, the motd changed to the map name for displaying the map on the signs and the max players of the server changed to the max players of the bedwars game
 If the bedwars game starts, the game changed the state to ingame of cloudnet to start a new server automatically and hide the server in the lobbies on the signs.
-Also the slots changed to 100, in order to join spectators.
+You can enable to get coins on kill, finalkill, win and target block destroy in the config.
+Also the slots changed to default 100, in order to join spectators. Also you can change the 100 spectator slots.
 
 ## Dependencies
 -   Java 8
 -   CloudNet <https://www.spigotmc.org/resources/cloudnet-the-cloud-network-environment-technology.42059/>
 -   BedwarsRel <https://www.spigotmc.org/resources/bedwars-rel.6799/>
+-   Vault <https://www.spigotmc.org/resources/vault.34315/> (Optional)
 
 ## Discord
 [![Join DKPlugins Discord](https://discordapp.com/api/guilds/513441444959223809/embed.png?style=banner2)](https://discord.gg/PawBsVy)
