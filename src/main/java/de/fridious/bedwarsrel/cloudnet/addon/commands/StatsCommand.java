@@ -16,7 +16,10 @@ public class StatsCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(sender instanceof Player) Bukkit.dispatchCommand(sender, "bw stats");
+        StringBuilder builder = new StringBuilder();
+        builder.append("bw stats");
+        for(String string : args) builder.append(" ").append(string);
+        if(sender instanceof Player) Bukkit.dispatchCommand(sender, builder.toString());
         return true;
     }
 }
