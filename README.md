@@ -14,7 +14,7 @@ On start of the plugin, the motd changed to the map name for displaying the map 
 If the bedwars game starts, the game changed the state to ingame of cloudnet to start a new server automatically and hide the server in the lobbies on the signs.
 You can enable to get coins on kill, finalkill, win and target block destroy in the config.
 Also the slots changed to default 100, in order to join spectators. Also you can change the 100 spectator slots.
-It has a Stats command, which executed the intern bw stats command of BedwarsRel
+It has a Stats command, which executed the intern bw stats command of BedwarsRel.
 
 ## Dependencies
 -   CloudNet <https://www.spigotmc.org/resources/cloudnet-the-cloud-network-environment-technology.42059/>
