@@ -8,40 +8,58 @@ package de.fridious.bedwarsrel.cloudnet.addon;
 
 import de.dytanic.cloudnet.bridge.CloudServer;
 import de.fridious.bedwarsrel.cloudnet.addon.commands.BedwarsRelCloudNetAddonCommand;
-import de.fridious.bedwarsrel.cloudnet.addon.listener.BedwarsGameStartedListener;
+import de.fridious.bedwarsrel.cloudnet.addon.config.Config;
+import de.fridious.bedwarsrel.cloudnet.addon.listener.*;
 import io.github.bedwarsrel.BedwarsRel;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * The core class of this addon
+ */
 public class BedwarsRelCloudNetAddon extends JavaPlugin {
 
-    /*
-    The field to save the instance of this class
+    /**
+     * The field to save the instance of this class
      */
     private static BedwarsRelCloudNetAddon instance;
 
-    /*
-    The fields for the console prefix, chat prefix and version
+    /**
+     * The field for the plugin version
      */
-    private String consolePrefix, chatPrefix, version;
+    private String version;
 
-    /*
-    Called, when the plugin is loaded
+    /**
+     * The economy field for vault
+     */
+    private Economy economy;
+
+    /**
+     * The config field
+     */
+    private Config config;
+
+    /**
+     * Called, when the plugin is loaded
      */
     @Override
     public void onLoad() {
         /*
-        Set the instance of this plugin
+         * Set the instance of this plugin
          */
         instance = this;
+
         /*
-        Set the prefixes
+         * Create a new instance of config and loading the config
          */
-        this.consolePrefix = "[BedwarsRelCloudNetAddon] ";
-        this.chatPrefix = "§8[§4BedwarsRelCloudNetAddon§8] §7";
+        this.config = new Config();
+        this.config.loadConfig();
+
         /*
         Load and set the project version from the project properties
          */
@@ -49,63 +67,85 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
         try {
             properties.load(this.getClassLoader().getResourceAsStream("project.properties"));
         } catch (IOException exception) {
-            System.out.println(this.consolePrefix + "Could't load version");
+            System.out.println(getPluginConfig().getConsolePrefix() + "Could't load version");
             exception.printStackTrace();
         }
         this.version = properties.getProperty("version");
     }
 
-    /*
-    Called, when the plugin is enabled
+    /**
+     * Called, when the plugin is enabled
      */
     @Override
     public void onEnable() {
         /*
-        Register the advertisement command
+         * Register the advertisement command
          */
         this.getCommand("bedwarsrelcloudnetaddon").setExecutor(new BedwarsRelCloudNetAddonCommand());
         /*
-        Register the BedwarsGameStartedListener
+         * Register the BedwarsGameStartListener
          */
-        Bukkit.getPluginManager().registerEvents(new BedwarsGameStartedListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BedwarsGameStartListener(), this);
         /*
-        Loop through all bedwars games and change following information's
+         * Loop through all bedwars games and change following information's
          */
         BedwarsRel.getInstance().getGameManager().getGames().forEach(game -> {
             /*
-            Set the max players of the server to the amount of the bedwars game
+             * Set the max players of the server to the amount of the bedwars game
              */
             CloudServer.getInstance().setMaxPlayers(game.getMaxPlayers());
             /*
-            Set the motd to the map name
+             * Set the motd to the map name
              */
             CloudServer.getInstance().setMotd(game.getName());
             /*
-            Update the informations async to the cloud
+             * Update the informations async to the cloud
              */
             CloudServer.getInstance().updateAsync();
         });
-        System.out.println(getConsolePrefix() + "BedwarsRelCloudNetAddon " + this.version + " is starting...");
-        System.out.println(getConsolePrefix() + "Plugin is developed by Fridious");
-        System.out.println(getConsolePrefix() + "GitHub: https://github.com/fridious");
+        /*
+         * Setup vault
+         */
+        setupVault();
+
+        System.out.println(getPluginConfig().getConsolePrefix() + "BedwarsRelCloudNetAddon " + this.version + " is starting...");
+        System.out.println(getPluginConfig().getConsolePrefix() + "Plugin is developed by Fridious");
+        System.out.println(getPluginConfig().getConsolePrefix() + "GitHub: https://github.com/fridious");
     }
 
-    /*
-    Called, when the plugin is disabled
+    /**
+     * Called, when the plugin is disabled
      */
     @Override
     public void onDisable() {
-        System.out.println(getConsolePrefix() + "BedwarsRelCloudNetAddon v" + this.version + " is stopping...");
-        System.out.println(getConsolePrefix() + "Plugin is developed by Fridious");
-        System.out.println(getConsolePrefix() + "GitHub: https://github.com/fridious");
+        System.out.println(getPluginConfig().getConsolePrefix() + "BedwarsRelCloudNetAddon v" + this.version + " is stopping...");
+        System.out.println(getPluginConfig().getConsolePrefix() + "Plugin is developed by Fridious");
+        System.out.println(getPluginConfig().getConsolePrefix() + "GitHub: https://github.com/fridious");
     }
 
-    public String getConsolePrefix() {
-        return consolePrefix;
+    /**
+     * Setup method for vault integration
+     */
+    private void setupVault() {
+        if(getServer().getPluginManager().getPlugin("Vault") == null)return;
+        RegisteredServiceProvider<Economy> serviceProvider = getServer().getServicesManager().getRegistration(Economy.class);
+        if(serviceProvider == null) return;
+        this.economy = serviceProvider.getProvider();
+        /*
+         * Register bedwars listener for getting money in the game, if enabled
+         */
+        if(config.isWinRewardEnabled())Bukkit.getPluginManager().registerEvents(new BedwarsGameOverListener(), this);
+        if(config.isKillRewardEnabled())Bukkit.getPluginManager().registerEvents(new BedwarsPlayerKilledListener(), this);
+        if(config.isFinalKillRewardEnabled())Bukkit.getPluginManager().registerEvents(new BedwarsPlayerFinalKilledListener(), this);
+        if(config.isTargetBlockDestroyedRewardEnabled())Bukkit.getPluginManager().registerEvents(new BedwarsTargetBlockDestroyedListener(), this);
     }
 
-    public String getChatPrefix() {
-        return chatPrefix;
+    public Economy getEconomy() {
+        return economy;
+    }
+
+    public Config getPluginConfig() {
+        return config;
     }
 
     public static BedwarsRelCloudNetAddon getInstance() {
