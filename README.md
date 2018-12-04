@@ -16,10 +16,12 @@ You can enable to get coins on kill, finalkill, win and target block destroy in 
 Also the slots changed to default 100, in order to join spectators. Also you can change the 100 spectator slots.
 
 ## Dependencies
--   Java 8
 -   CloudNet <https://www.spigotmc.org/resources/cloudnet-the-cloud-network-environment-technology.42059/>
 -   BedwarsRel <https://www.spigotmc.org/resources/bedwars-rel.6799/>
 -   Vault <https://www.spigotmc.org/resources/vault.34315/> (Optional)
 
 ## Discord
 [![Join DKPlugins Discord](https://discordapp.com/api/guilds/513441444959223809/embed.png?style=banner2)](https://discord.gg/PawBsVy)
+
+## Developer
+-   BedwarsPlayerFinalKilledEvent
