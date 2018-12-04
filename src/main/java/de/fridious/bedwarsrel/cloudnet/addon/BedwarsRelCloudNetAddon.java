@@ -8,6 +8,7 @@ package de.fridious.bedwarsrel.cloudnet.addon;
 
 import de.dytanic.cloudnet.bridge.CloudServer;
 import de.fridious.bedwarsrel.cloudnet.addon.commands.BedwarsRelCloudNetAddonCommand;
+import de.fridious.bedwarsrel.cloudnet.addon.commands.StatsCommand;
 import de.fridious.bedwarsrel.cloudnet.addon.config.Config;
 import de.fridious.bedwarsrel.cloudnet.addon.listener.*;
 import io.github.bedwarsrel.BedwarsRel;
@@ -79,11 +80,12 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
     @Override
     public void onEnable() {
         /*
-         * Register the advertisement command
+         * Register commands
          */
         this.getCommand("bedwarsrelcloudnetaddon").setExecutor(new BedwarsRelCloudNetAddonCommand());
+        this.getCommand("stats").setExecutor(new StatsCommand());
         /*
-         * Register the BedwarsGameStartListener
+         * Register the listeners
          */
         Bukkit.getPluginManager().registerEvents(new BedwarsGameStartListener(), this);
         /*
