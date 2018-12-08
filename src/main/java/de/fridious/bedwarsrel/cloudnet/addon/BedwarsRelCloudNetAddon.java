@@ -6,11 +6,16 @@ package de.fridious.bedwarsrel.cloudnet.addon;
  *
  */
 
-import de.dytanic.cloudnet.bridge.CloudServer;
+import de.fridious.bedwarsrel.cloudnet.addon.cloudnet.CloudAPI;
+import de.fridious.bedwarsrel.cloudnet.addon.cloudnet.CloudNetV2API;
+import de.fridious.bedwarsrel.cloudnet.addon.cloudnet.CloudNetV3API;
 import de.fridious.bedwarsrel.cloudnet.addon.commands.BedwarsRelCloudNetAddonCommand;
+import de.fridious.bedwarsrel.cloudnet.addon.commands.ForceResourceCommand;
 import de.fridious.bedwarsrel.cloudnet.addon.commands.StatsCommand;
 import de.fridious.bedwarsrel.cloudnet.addon.config.Config;
 import de.fridious.bedwarsrel.cloudnet.addon.listener.*;
+import de.fridious.bedwarsrel.cloudnet.addon.player.BedwarsRelPlayerManager;
+import de.fridious.bedwarsrel.cloudnet.addon.resourcevoting.ResourceVotingManager;
 import io.github.bedwarsrel.BedwarsRel;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -46,6 +51,21 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
     private Config config;
 
     /**
+     * The BedwarsRelPlayerManager to manage all online BedwarsPlayer
+     */
+    private BedwarsRelPlayerManager bedwarsRelPlayerManager;
+
+    /**
+     * ResourceVotingManager to manage votes for voting
+     */
+    private ResourceVotingManager resourceVotingManager;
+
+    /**
+     * CloudAPI interface to implement all cloud versions
+     */
+    private CloudAPI cloudAPI;
+
+    /**
      * Called, when the plugin is loaded
      */
     @Override
@@ -56,13 +76,7 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
         instance = this;
 
         /*
-         * Create a new instance of config and loading the config
-         */
-        this.config = new Config();
-        this.config.loadConfig();
-
-        /*
-        Load and set the project version from the project properties
+         * Load and set the project version from the project properties
          */
         final Properties properties = new Properties();
         try {
@@ -72,6 +86,17 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
             exception.printStackTrace();
         }
         this.version = properties.getProperty("version");
+
+        /*
+         * Create a new instance of config and loading the config
+         */
+        this.config = new Config();
+        this.config.loadConfig();
+
+        /*
+         * Create a new instance of BedwarsRelPlayerManager
+         */
+        this.bedwarsRelPlayerManager = new BedwarsRelPlayerManager();
     }
 
     /**
@@ -79,15 +104,19 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
      */
     @Override
     public void onEnable() {
+        if(Bukkit.getPluginManager().isPluginEnabled("CloudNetAPI")) this.cloudAPI = new CloudNetV2API();
+        else if(Bukkit.getPluginManager().isPluginEnabled("")) this.cloudAPI = new CloudNetV3API();
         /*
          * Register commands
          */
         this.getCommand("bedwarsrelcloudnetaddon").setExecutor(new BedwarsRelCloudNetAddonCommand());
         this.getCommand("stats").setExecutor(new StatsCommand());
         /*
-         * Register the listeners
+         * Register listeners
          */
-        Bukkit.getPluginManager().registerEvents(new BedwarsGameStartListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BedwarsGameStartedListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BedwarsPlayerJoinedListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BedwarsPlayerLeaveListener(), this);
         /*
          * Loop through all bedwars games and change following information's
          */
@@ -95,20 +124,30 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
             /*
              * Set the max players of the server to the amount of the bedwars game
              */
-            CloudServer.getInstance().setMaxPlayers(game.getMaxPlayers());
+            cloudAPI.setMaxPlayers(game.getMaxPlayers());
             /*
              * Set the motd to the map name
              */
-            CloudServer.getInstance().setMotd(game.getName());
+            cloudAPI.setMotd(game.getName());
             /*
-             * Update the informations async to the cloud
+             * Update the information to cloud
              */
-            CloudServer.getInstance().updateAsync();
+            cloudAPI.update();
         });
         /*
          * Setup vault
          */
         setupVault();
+
+        /*
+         * Create a new instance of ResourceVotingManager, if resource voting is enabled and register listener and command for ResourceVoting
+         */
+        if(this.config.isResourceVotingEnabled()) {
+            Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
+            Bukkit.getPluginManager().registerEvents(new BedwarsResourceSpawnListener(), this);
+            Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
+            getCommand("forceresource").setExecutor(new ForceResourceCommand());
+        }
 
         System.out.println(getPluginConfig().getConsolePrefix() + "BedwarsRelCloudNetAddon " + this.version + " is starting...");
         System.out.println(getPluginConfig().getConsolePrefix() + "Plugin is developed by Fridious");
@@ -148,6 +187,23 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
 
     public Config getPluginConfig() {
         return config;
+    }
+
+    public BedwarsRelPlayerManager getBedwarsRelPlayerManager() {
+        return bedwarsRelPlayerManager;
+    }
+
+    /**
+     * Create a new instance of ResourceVotingManager, if not exist
+     * @return ResourceVotingManager
+     */
+    public ResourceVotingManager getResourceVotingManager() {
+        if(this.resourceVotingManager == null) this.resourceVotingManager = new ResourceVotingManager();
+        return resourceVotingManager;
+    }
+
+    public CloudAPI getCloudAPI() {
+        return cloudAPI;
     }
 
     public static BedwarsRelCloudNetAddon getInstance() {

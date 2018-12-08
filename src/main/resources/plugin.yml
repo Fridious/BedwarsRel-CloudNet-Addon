@@ -4,11 +4,8 @@ description: A simple CloudNetAddon to change the state of server to ingame, if 
 version: ${project.version}
 main: de.fridious.bedwarsrel.cloudnet.addon.BedwarsRelCloudNetAddon
 prefix: BedwarsRelCloudNetAddon
-softdepend: [CloudNetAPI,BedwarsRel]
+softdepend: [BedwarsRel]
 commands:
   bedwarsrelcloudnetaddon:
-    usage: /bedwarsrelcloudnetaddon
-    description: Advertisment for the author Fridious
   stats:
-    usage: /stats
-    description: Stats command for Bedwars
+  forceresource:

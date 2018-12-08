@@ -26,7 +26,7 @@ public abstract class SimpleConfig {
      * Fields for config location and configuration
      */
     private final File file;
-    private Configuration config;
+    private Configuration configuration;
 
     public SimpleConfig(File file) {
         this.file = file;
@@ -64,7 +64,7 @@ public abstract class SimpleConfig {
     public void save() {
         if(file == null || !file.exists()) return;
         try {
-            ConfigurationProvider.getProvider(YamlConfiguration.class).save(this.config,file);
+            ConfigurationProvider.getProvider(YamlConfiguration.class).save(this.configuration,file);
         }catch (Exception exception) {
             System.out.println(BedwarsRelCloudNetAddon.getInstance().getPluginConfig().getConsolePrefix() + "Could not save config file.");
             System.out.println(BedwarsRelCloudNetAddon.getInstance().getPluginConfig().getConsolePrefix() + "Error: "+exception.getMessage());
@@ -79,7 +79,7 @@ public abstract class SimpleConfig {
         if(file == null) return;
         try{
             if(file.exists()) file.createNewFile();
-            this.config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
+            this.configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
         }catch (Exception exception){
             System.out.println(BedwarsRelCloudNetAddon.getInstance().getPluginConfig().getConsolePrefix() + "Could not load config file.");
             System.out.println(BedwarsRelCloudNetAddon.getInstance().getPluginConfig().getConsolePrefix() + "Error: "+exception.getMessage());
@@ -88,21 +88,11 @@ public abstract class SimpleConfig {
     }
 
     /**
-     * Set a value in config, if path already exists, the value of the part will override
-     * @param path
-     * @param value
+     * Return the configuration of the config
+     * @return configuration
      */
-    public void setValue(String path, Object value){
-        this.config.set(path,value);
-    }
-
-    /**
-     * Add a value to config
-     * @param path
-     * @param value
-     */
-    public void addValue(String path, Object value){
-        if(!this.config.contains(path) )this.config.set(path,value);
+    public Configuration getConfiguration() {
+        return configuration;
     }
 
     /**
@@ -111,7 +101,7 @@ public abstract class SimpleConfig {
      * @return Object
      */
     public Object getValue(String path){
-        return this.config.getStringList(path);
+        return this.configuration.getStringList(path);
     }
 
     /**
@@ -120,7 +110,7 @@ public abstract class SimpleConfig {
      * @return String
      */
     public String getStringValue(String path){
-        return this.config.getString(path);
+        return this.configuration.getString(path);
     }
 
     /**
@@ -129,7 +119,7 @@ public abstract class SimpleConfig {
      * @return String
      */
     public String getMessageValue(String path){
-        return ChatColor.translateAlternateColorCodes('&',getStringValue(path));
+        return ChatColor.translateAlternateColorCodes('&', getStringValue(path));
     }
 
     /**
@@ -138,7 +128,7 @@ public abstract class SimpleConfig {
      * @return int
      */
     public int getIntValue(String path){
-        return this.config.getInt(path);
+        return this.configuration.getInt(path);
     }
 
     /**
@@ -147,7 +137,7 @@ public abstract class SimpleConfig {
      * @return double
      */
     public double getDoubleValue(String path){
-        return this.config.getDouble(path);
+        return this.configuration.getDouble(path);
     }
 
     /**
@@ -156,7 +146,7 @@ public abstract class SimpleConfig {
      * @return long
      */
     public long getLongValue(String path){
-        return this.config.getLong(path);
+        return this.configuration.getLong(path);
     }
 
     /**
@@ -165,7 +155,7 @@ public abstract class SimpleConfig {
      * @return boolean
      */
     public boolean getBooleanValue(String path){
-        return this.config.getBoolean(path);
+        return this.configuration.getBoolean(path);
     }
 
     /**
@@ -174,7 +164,13 @@ public abstract class SimpleConfig {
      * @return List<String>
      */
     public List<String> getStringListValue(String path){
-        return this.config.getStringList(path);
+        return this.configuration.getStringList(path);
+    }
+
+    public List<String> getMessageListValue(String path) {
+        List<String> messages = new LinkedList<>();
+        getStringListValue(path).forEach((message)-> messages.add(ChatColor.translateAlternateColorCodes('&', message)));
+        return messages;
     }
 
     /**
@@ -183,7 +179,7 @@ public abstract class SimpleConfig {
      * @return List<Integer>
      */
     public List<Integer> getIntListValue(String path){
-        return this.config.getIntList(path);
+        return this.configuration.getIntList(path);
     }
 
     /**
@@ -192,7 +188,7 @@ public abstract class SimpleConfig {
      * @return List<Double>
      */
     public List<Double> getDoubleListValue(String path){
-        return this.config.getDoubleList(path);
+        return this.configuration.getDoubleList(path);
     }
 
     /**
@@ -201,7 +197,7 @@ public abstract class SimpleConfig {
      * @return List<Long>
      */
     public List<Long> getLongListValue(String path){
-        return this.config.getLongList(path);
+        return this.configuration.getLongList(path);
     }
 
     /**
@@ -210,7 +206,7 @@ public abstract class SimpleConfig {
      * @return List<Boolean>
      */
     public List<Boolean> getBooleanListValue(String path){
-        return this.config.getBooleanList(path);
+        return this.configuration.getBooleanList(path);
     }
 
     /**
@@ -219,7 +215,7 @@ public abstract class SimpleConfig {
      * @return Collection<String>
      */
     public Collection<String> getKeys(String path){
-        Configuration config = this.config.getSection(path);
+        Configuration config = this.configuration.getSection(path);
         if(config != null) return config.getKeys();
         else return new LinkedList<>();
     }
@@ -230,7 +226,25 @@ public abstract class SimpleConfig {
      * @return boolean
      */
     public boolean contains(String path){
-        return this.config.contains(path);
+        return this.configuration.contains(path);
+    }
+
+    /**
+     * Set a value in config, if path already exists, the value of the part will override
+     * @param path
+     * @param value
+     */
+    public void setValue(String path, Object value){
+        this.configuration.set(path,value);
+    }
+
+    /**
+     * Add a value to config
+     * @param path
+     * @param value
+     */
+    public void addValue(String path, Object value){
+        if(!this.configuration.contains(path) )this.configuration.set(path,value);
     }
 
     /**
