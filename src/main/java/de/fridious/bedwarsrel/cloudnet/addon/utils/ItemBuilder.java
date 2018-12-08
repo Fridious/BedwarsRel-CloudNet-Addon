@@ -26,7 +26,7 @@ import java.util.UUID;
 public class ItemBuilder {
 
     private ItemStack itemStack;
-    List<String> lore = new LinkedList<>();
+    private List<String> lore = new LinkedList<>();
 
     public ItemBuilder() {
 
@@ -103,10 +103,9 @@ public class ItemBuilder {
         }
     }
 
-    public ItemBuilder(short data){
-        if(data <= -1) data = 15;
-        this.itemStack = new ItemStack(Material.STAINED_GLASS_PANE, 1,data);
-        setName("§7§8§0");
+    public ItemBuilder(short damage){
+        if(damage <= -1) damage = 15;
+        this.itemStack = new ItemStack(Material.STAINED_GLASS_PANE, 1, damage);
     }
 
     public ItemBuilder(String itemid){

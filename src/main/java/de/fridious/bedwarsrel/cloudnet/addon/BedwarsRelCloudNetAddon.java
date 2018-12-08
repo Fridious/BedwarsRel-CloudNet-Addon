@@ -105,7 +105,7 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
     @Override
     public void onEnable() {
         if(Bukkit.getPluginManager().isPluginEnabled("CloudNetAPI")) this.cloudAPI = new CloudNetV2API();
-        else if(Bukkit.getPluginManager().isPluginEnabled("")) this.cloudAPI = new CloudNetV3API();
+        else if(Bukkit.getPluginManager().isPluginEnabled("cloudnet-bridge")) this.cloudAPI = new CloudNetV3API();
         /*
          * Register commands
          */
