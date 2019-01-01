@@ -6,25 +6,27 @@ package de.fridious.bedwarsrel.cloudnet.addon.cloudnet;
  *
  */
 
+import de.dytanic.cloudnet.ext.bridge.bukkit.BukkitCloudNetHelper;
+
 public class CloudNetV3API implements CloudAPI {
 
     @Override
     public void changeToIngame() {
-        throw new UnsupportedOperationException("CloudNetV3 support coming soon!");
+        BukkitCloudNetHelper.changeToIngame();
     }
 
     @Override
     public void setMaxPlayers(int maxPlayers) {
-        throw new UnsupportedOperationException("CloudNetV3 support coming soon!");
+        BukkitCloudNetHelper.setMaxPlayers(maxPlayers);
     }
 
     @Override
     public void setMotd(String motd) {
-        throw new UnsupportedOperationException("CloudNetV3 support coming soon!");
+        BukkitCloudNetHelper.setApiMotd(motd);
     }
 
     @Override
     public void update() {
-        throw new UnsupportedOperationException("CloudNetV3 support coming soon!");
+        BukkitCloudNetHelper.updateServiceInfo();
     }
 }

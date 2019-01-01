@@ -21,7 +21,6 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.IOException;
 import java.util.Properties;
 
@@ -104,8 +103,29 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        if(Bukkit.getPluginManager().isPluginEnabled("CloudNetAPI")) this.cloudAPI = new CloudNetV2API();
-        else if(Bukkit.getPluginManager().isPluginEnabled("cloudnet-bridge")) this.cloudAPI = new CloudNetV3API();
+        /*
+         * Check if cloudnet is installed, if installed enable cloud features of this plugin.
+         */
+        if(Bukkit.getPluginManager().isPluginEnabled("CloudNetAPI")) {
+            this.cloudAPI = new CloudNetV2API();
+            System.out.println(getPluginConfig().getConsolePrefix() + "CloudNetV2 found");
+        }
+        else if(Bukkit.getPluginManager().isPluginEnabled("cloudnet-bridge")) {
+            this.cloudAPI = new CloudNetV3API();
+            System.out.println(getPluginConfig().getConsolePrefix() + "CloudNetV3 found");
+        }
+        else {
+            this.cloudAPI = new CloudAPI() {
+                @Override
+                public void changeToIngame() {}
+                @Override
+                public void setMaxPlayers(int maxPlayers) {}
+                @Override
+                public void setMotd(String motd) {}
+                @Override
+                public void update() {}};
+            System.out.println(getPluginConfig().getConsolePrefix() + "CloudNet wasn't found");
+        }
         /*
          * Register commands
          */
@@ -129,11 +149,11 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
              * Set the motd to the map name
              */
             cloudAPI.setMotd(game.getName());
-            /*
-             * Update the information to cloud
-             */
-            cloudAPI.update();
         });
+        /*
+         * Update the information to cloud
+         */
+        cloudAPI.update();
         /*
          * Setup vault
          */
@@ -170,7 +190,7 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
     private void setupVault() {
         if(getServer().getPluginManager().getPlugin("Vault") == null)return;
         RegisteredServiceProvider<Economy> serviceProvider = getServer().getServicesManager().getRegistration(Economy.class);
-        if(serviceProvider == null) return;
+        if(serviceProvider == null)return;
         this.economy = serviceProvider.getProvider();
         /*
          * Register bedwars listener for getting money in the game, if enabled
