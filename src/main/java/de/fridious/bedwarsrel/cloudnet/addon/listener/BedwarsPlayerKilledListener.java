@@ -7,7 +7,6 @@ package de.fridious.bedwarsrel.cloudnet.addon.listener;
  */
 
 import de.fridious.bedwarsrel.cloudnet.addon.BedwarsRelCloudNetAddon;
-import de.fridious.bedwarsrel.cloudnet.addon.config.Config;
 import de.fridious.bedwarsrel.cloudnet.addon.events.BedwarsPlayerFinalKilledEvent;
 import io.github.bedwarsrel.events.BedwarsPlayerKilledEvent;
 import io.github.bedwarsrel.game.Team;

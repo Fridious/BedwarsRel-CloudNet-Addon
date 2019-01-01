@@ -24,7 +24,7 @@ public class BedwarsRelCloudNetAddonCommand implements CommandExecutor {
          * Send the advertising message to the console sender
          */
         Config config = BedwarsRelCloudNetAddon.getInstance().getPluginConfig();
-        sender.sendMessage((sender instanceof Player ? config.getChatPrefix() : config.getConsolePrefix()) + "This plugin was developed by Fridious(GitHub: https://github.com/fridious)");
+        sender.sendMessage((sender instanceof Player ? config.getChatPrefix() : config.getConsolePrefix()) + "This plugin was developed by Philipp Elvin Friedhoff/Fridious(GitHub: https://github.com/fridious)");
         return true;
     }
 }

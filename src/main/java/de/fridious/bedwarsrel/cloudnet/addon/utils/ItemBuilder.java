@@ -103,9 +103,10 @@ public class ItemBuilder {
         }
     }
 
-    public ItemBuilder(short damage){
-        if(damage <= -1) damage = 15;
-        this.itemStack = new ItemStack(Material.STAINED_GLASS_PANE, 1, damage);
+    public ItemBuilder(short subId){
+        if(subId <= -1) subId = 15;
+        this.itemStack = new ItemStack(Material.STAINED_GLASS_PANE, 1, subId);
+        setName("§7§8§2");
     }
 
     public ItemBuilder(String itemid){

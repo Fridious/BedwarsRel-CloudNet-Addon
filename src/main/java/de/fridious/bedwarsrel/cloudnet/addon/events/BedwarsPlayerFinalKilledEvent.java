@@ -39,6 +39,7 @@ public class BedwarsPlayerFinalKilledEvent extends Event {
         return handlerList;
     }
 
+    @Override
     public HandlerList getHandlers() {
         return handlerList;
     }
