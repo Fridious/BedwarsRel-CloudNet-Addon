@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.fridious.bedwarsrel.cloudnet.addon</groupId>
     <artifactId>BedwarsRelCloudNetAddon</artifactId>
-    <version>1.4</version>
+    <version>1.4.1</version>
     <build>
         <plugins>
             <plugin>
