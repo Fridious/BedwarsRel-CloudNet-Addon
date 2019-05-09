@@ -6,6 +6,7 @@ package de.fridious.bedwarsrel.cloudnet.addon.cloudnet;
  *
  */
 
+import de.dytanic.cloudnet.ext.bridge.BridgeHelper;
 import de.dytanic.cloudnet.ext.bridge.bukkit.BukkitCloudNetHelper;
 
 public class CloudNetV3API implements CloudAPI {
@@ -27,6 +28,6 @@ public class CloudNetV3API implements CloudAPI {
 
     @Override
     public void update() {
-        BukkitCloudNetHelper.updateServiceInfo();
+        BridgeHelper.updateServiceInfo();
     }
 }

@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.fridious.bedwarsrel.cloudnet.addon</groupId>
     <artifactId>BedwarsRelCloudNetAddon</artifactId>
-    <version>1.4.1</version>
+    <version>1.4.2</version>
     <build>
         <plugins>
             <plugin>
@@ -21,6 +21,19 @@
                     <source>8</source>
                     <target>8</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
         <resources>
@@ -72,6 +85,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>de.dytanic.cloudnet</groupId>
+            <artifactId>cloudnet-bridge</artifactId>
+            <version>3.0.0-PRE-3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
@@ -80,13 +99,13 @@
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-config</artifactId>
-            <version>LATEST</version>
+            <version>1.14-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-chat</artifactId>
-            <version>LATEST</version>
+            <version>1.14-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

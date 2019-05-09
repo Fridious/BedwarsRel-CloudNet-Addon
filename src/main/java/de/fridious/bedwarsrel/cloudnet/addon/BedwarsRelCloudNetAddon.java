@@ -21,6 +21,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.IOException;
 import java.util.Properties;
 
@@ -82,7 +83,6 @@ public class BedwarsRelCloudNetAddon extends JavaPlugin {
             properties.load(this.getClassLoader().getResourceAsStream("project.properties"));
         } catch (IOException exception) {
             System.out.println(getPluginConfig().getConsolePrefix() + "Could't load version");
-            exception.printStackTrace();
         }
         this.version = properties.getProperty("version");
 
